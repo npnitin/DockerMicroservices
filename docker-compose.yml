@@ -1,0 +1,27 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.7'
+
+# Define services
+services:
+  # conversion service
+  app-server1:
+    build:
+      context: currency-conversion-service 
+      dockerfile: Dockerfile
+    ports:
+      - "8100:8100" 
+    restart: always
+    depends_on: 
+      -  app-server2
+    
+
+  # exchange Service 
+  app-server2:
+    build:
+      context: currency-exchange-service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: always
+   

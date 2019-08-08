@@ -1,23 +1,12 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
-
 version: '3.3'
-
-# Define services
 services:
-  # conversion service
-  currency-conversion:
-    image:npnitin/currency-conversion-service
-    ports:
-      - "8100:8100" 
-    restart: always
-    depends_on: 
-      - currency-exchange
-    
 
-  # exchange Service 
- currency-exchange:
-    image:npnitin/currency-exchange-service
+  currency-conversion:
+    image: npnitin/currency-conversion-service:latest
     ports:
-      - "8000:8000"
-    restart: always
-   
+      - '8100:8100'
+
+  currency-exchange:
+    image: npnitin/currency-exchange-service:latest
+    ports:
+      - '8000:8000'

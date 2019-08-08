@@ -1,7 +1,5 @@
 package com.example.currencyconversionservice;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.ribbon.proxy.annotation.Hystrix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +23,6 @@ public class CurrencyConversionController {
     LoadBalancerClient loadBalancerClient;
 
     @GetMapping("/currency-converter/from/{from}/to/{to}/quantity/{quantity}")
-    @HystrixCommand(fallbackMethod = "convertCurrencyFallback")
     public CurrenyConversionBean convertCurrency(@PathVariable String from,@PathVariable String to,@PathVariable int quantity){
 
         String url = loadBalancerClient.choose("currency-exchange-service").getUri().toString();
@@ -35,9 +32,6 @@ public class CurrencyConversionController {
         return new CurrenyConversionBean(1,from,to,exchangeValue.getConversionMultiple(),quantity,exchangeValue.getConversionMultiple()*quantity);
     }
 
-    public CurrenyConversionBean convertCurrencyFallback( String from,String to,int quantity){
-        return new CurrenyConversionBean();
-    }
     @GetMapping("/currency-converter-feign/from/{from}/to/{to}/quantity/{quantity}")
     public CurrenyConversionBean convertCurrencyFeign(@PathVariable String from,@PathVariable String to,@PathVariable int quantity){
 
